@@ -1,5 +1,5 @@
 {
-  "name": "snake",
+  "name": "nodeAsnake",
   "version": "0.0.2",
   "dependencies": {
     "socket.io": "^2.3.0"
@@ -18,9 +18,12 @@
     "url": "git+https://github.com/muppetkermit/nodesnake.no.de.git"
   },
   "author": "ymutlu",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/muppetkermit/nodesnake.no.de/issues"
   },
-  "homepage": "https://github.com/muppetkermit/nodesnake.no.de#readme"
+  "homepage": "https://github.com/muppetkermit/nodesnake.no.de#readme",
+  "engines": {
+    "node": "12.x"
+  }
 }
