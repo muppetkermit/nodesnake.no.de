@@ -1,7 +1,26 @@
 {
-  "name": "node-snake",
+  "name": "snake",
   "version": "0.0.2",
   "dependencies": {
-    "socket.io": "0.8.5"
-  }
+    "socket.io": "^2.3.0"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "description": "",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muppetkermit/nodesnake.no.de.git"
+  },
+  "author": "ymutlu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/muppetkermit/nodesnake.no.de/issues"
+  },
+  "homepage": "https://github.com/muppetkermit/nodesnake.no.de#readme"
 }
