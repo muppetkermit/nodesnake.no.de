@@ -5,8 +5,8 @@
 
 
 var app = require('http').createServer(handler)
-  , path = require("path")
-  , io = require('socket.io').listen(app)
+  , path = require("path");
+var io = require('socket.io').listen(app)
   , fs = require('fs')
   , sys = require('sys')
   , World = require(__dirname + '/js/World');
