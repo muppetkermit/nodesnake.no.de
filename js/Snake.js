@@ -26,14 +26,7 @@ function Snake ($x,$y,$len,$dir,$user){
 	}
 	
 	this.doStep = function($dir){
-		if(Math.abs(dir - $dir) == 2){
-			dir = dir;
-		}else{
-			dir = $dir;
-		}
-		
-		
-		//console.log("DIRRRR " + dir);
+		dir = (dir + $dir + 4) % 4;
 		
 		var c = this.head;
 		var t = c.tail;

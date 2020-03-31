@@ -277,6 +277,23 @@ input:-moz-placeholder {color:#cb1f1f;}
 	var spammerTimer = 0;
 	var spammerCounter = 0;
 	var spammerWait = 4999;
+	var clickDelay = 150;
+	var lastClick = null;
+
+	function enableCommand() {
+		if (!lastClick) {
+			lastClick = new Date();
+			console.log("QWEQWEQWE");
+			return true;
+		}
+		let currentTime = new Date();
+		console.log(currentTime - lastClick , clickDelay , "TESTT");
+		if ( currentTime - lastClick > clickDelay ) {
+			lastClick = new Date();
+			return true;
+		}
+		return false;
+	}
 	
 	function log_(s , color){
 	  	var td = new Date() - timeDif;
@@ -315,10 +332,10 @@ input:-moz-placeholder {color:#cb1f1f;}
 	
 	var  _lastSentData;
 	function emmitData(){
-		if(_lastSentData != _currDir){
+		if (_currDir != 0 && enableCommand()) {
 			sendData(_currDir);
-			_lastSentData = _currDir;
 		}
+		_currDir = 0;
 	}
 	
 	var interval__ = -1;
@@ -327,6 +344,7 @@ input:-moz-placeholder {color:#cb1f1f;}
 		
 		login.style.visibility = "hidden";
 		
+		addEvent(document,'keydown', onKeyDown);
 		addEvent(document,'mousedown', onMouseEvent);
 		addEvent(document,'click', function(){void(0);}) ;
 		addEvent(document,'mouseup', onMouseEvent);
@@ -356,6 +374,22 @@ input:-moz-placeholder {color:#cb1f1f;}
 				moveJoystick(e.targetTouches[0].pageX,e.targetTouches[0].pageY);
 			break;
 		}
+	}
+
+	function onKeyDown(event) {
+		_currDir = 0;
+		event = event || window.event;
+	    if (event.keyCode == '37') {
+	       // left arrow
+	       _currDir = -1;
+	    } else if (event.keyCode == '39') {
+	       // right arrow
+	       _currDir = 1;
+	    }
+	    if ( _currDir != 0 ) {
+	    	event.preventDefault();
+	    	emmitData();
+	    }
 	}
 	
 	function onMouseEvent(e){
@@ -414,8 +448,14 @@ input:-moz-placeholder {color:#cb1f1f;}
 	
 	var prevX = 0, prevY = 0;
 	var _left = 0, _up = 1, _right = 2, _down = 3;
+	var LEFT = -1, RIGHT = 1;
 	var _currDir = 0;
 	function findVal(x,y){
+		var action = 0;
+		if ( x < 0 ) { action = LEFT; }
+		else if ( x > 0 ) { action = RIGHT; }
+		console.log(action , x);
+		return action;
 		if(x<0 && y<=0){
 			if(y>x)
 				return _left;

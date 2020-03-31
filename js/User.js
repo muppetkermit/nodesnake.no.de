@@ -41,6 +41,7 @@ function User (name){
 		// this.snake.doStep($dir);
 		//console.log(this.name +" USER_"+this.id + "   command : " + this.command);
 		this.snake.doStep(this.command);
+		this.command = 0;
 	}
 	
 	this.die = function (){
