@@ -283,11 +283,9 @@ input:-moz-placeholder {color:#cb1f1f;}
 	function enableCommand() {
 		if (!lastClick) {
 			lastClick = new Date();
-			console.log("QWEQWEQWE");
 			return true;
 		}
 		let currentTime = new Date();
-		console.log(currentTime - lastClick , clickDelay , "TESTT");
 		if ( currentTime - lastClick > clickDelay ) {
 			lastClick = new Date();
 			return true;
@@ -454,33 +452,7 @@ input:-moz-placeholder {color:#cb1f1f;}
 		var action = 0;
 		if ( x < 0 ) { action = LEFT; }
 		else if ( x > 0 ) { action = RIGHT; }
-		console.log(action , x);
 		return action;
-		if(x<0 && y<=0){
-			if(y>x)
-				return _left;
-			else
-				return _up;
-		}
-		if(y<0 & x>=0){
-			if(x<-1*y)
-				return _up;
-			else
-				return _right;
-		}
-		if(x>0 && y>=0){
-			if(x>y)
-				return _right;
-			else
-				return _down;
-		}
-		if(x<=0 && y>0){
-			if(y>-1*x)
-				return _down;
-			else
-				return _left;
-		}
-		return _currDir;
 	}
 		
 window.addEventListener('load', function(e) {
