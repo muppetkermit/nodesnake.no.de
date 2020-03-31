@@ -1,0 +1,299 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-9" />
+<title>NodeaSnake</title>
+  
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-24610437-1']);
+  _gaq.push(['_setDomainName', 'ymutlu.com']);
+  _gaq.push(['_setAllowHash', 'false']);
+  _gaq.push(['_setAllowLinker', true]);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+<!-- Google Analytics Social Button Tracking -->
+<script type="text/javascript" src="http://www.ymutlu.com/js/ga_social_tracking.js"></script>
+
+
+<link type="text/css" href="css/style.css" rel="stylesheet" media="all" />
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.mousewheel.js"></script>
+<script type="text/javascript" src="js/jquery.jscrollpane.min.js"></script>
+<script type="text/javascript" id="sourcecode">
+	
+	
+  var URL = document.URL;
+  var urlArr = URL.split("/");
+  URL = urlArr[0]+"//"+ urlArr[2];
+  
+  
+  $(function(){
+		$('.scroll-pane').jScrollPane({showArrows: true});
+	});
+	
+var console_ = { 	log:function(s){
+						//console.log("LOGGER:" + s);
+					},
+					dir:function(s){
+						//console.dir(s)
+					}
+				}
+</script>
+</head>
+
+<body>
+<div class="header">
+	<div class="headerCenter">
+    	<div class="headerLeft">NODEaSNAKE</div>
+         <div class="headerRight">
+        	is developed to test <a href="http://nodejs.org/" target="_blank">node.js</a> server responses and multiplayer snake. You can use <a href="http://nodesnake.herokuapp.com/joystick" target="_blank">joystick</a> from your mobile phone or another tab in your browser. Cause of latency snake don't die for now. Have Fun...
+        	<br/>is developed with <a href="http://nodejs.org/" target="_blank">node.js</a> and <a href="http://socket.io/" target="_blank">socket.io</a> framework. It's deployed to <a href="http://www.heroku.com/" target="_blank">heroku</a> server service. It works better in Chrome.
+        </div>
+		<div class="social">
+			<a href="https://twitter.com/#!/kermythefrog" target="_blank">TWITTER</a>
+			</div>
+		<div class="clear"></div>
+    </div><!-- center -->
+</div><!-- header -->
+<div class="clear"></div>
+<div class="content">
+	<div class="leftColumn">
+		<h1 class="left">TABLE VIEW: <span id="displaying">-</span> || ACTIVE PLAYER: <span id="playing">-</span> </h1>
+    	<!--<div class="right rectangleDiv"><svg xmlns="http://www.w3.org/2000/svg" version="1.1"><rect width="20" height="20"  style="fill:#54db5f;float:right;"/></svg></div><h1 class="right">CONNECTED</h1> -->
+        <div id="statusColor" class="right rectangleDiv"></div><h2 id="status" class="right">DISCONNECTED</h2>
+        <div class="clear"></div>
+        <div class="gameBox">
+			<canvas id="canvas"></canvas>
+        </div><!-- gameBox -->
+    </div><!-- leftColumn -->
+    <div class="rightColumn">
+    	<div class="playerBox">
+        	<h1>Players</h1>
+            <ul id="highScores">
+            	<li style="border-left:4px solid rgba(255,10,3,1);"></li>
+            	<!-- <li><span style="background-color:red;"><img src="gfx/spacer.gif" alt="" width="5px" height="1px" /></span>user1</li>-->
+            </ul>
+        </div><!-- playerBox -->
+        
+    </div><!-- rightColumn -->
+    <div class="clear"></div>
+    <div class="chatBox">
+        <form>
+        	<input name="chatInput" type="text" autocomplete="off" placeholder="type and press enter to chat" id="chat" />
+        	<div class="chatArea">
+        		<div id="log" class="scroll-pane">
+		            <p class="firtComment" style="color:#70cdc3;"> </p>
+		            <script>$(".firtComment").html("<a href='"+URL+"/joystick'>To Control Your Snake Go To Console Page.</a>")</script>
+		        </div>
+            </div>
+        </form>
+    </div>
+</div><!-- content -->
+</body>
+
+
+<script src="js/Render.js"></script>
+
+<script>
+    var d = window.document,
+    w = d.width,
+    h = d.height
+    dtc = "#777";
+    
+    var canvas = d.getElementById("canvas");
+    canvas.width = 225;
+    canvas.height = 225;
+    
+    if(!canvas)
+    	canvas = d.body.appendChild(d.createElement('canvas'));
+    context = canvas.getContext( '2d' );
+	
+	var renderer = new Renderer();
+	
+	function renderData(table){
+		//console_.log(table);
+		renderer.renderD(context,table);
+	}
+	
+var addEvent = (function () {
+  if (document.addEventListener) {
+    return function (el, type, fn) {
+      if (el && el.nodeName || el === window) {
+        el.addEventListener(type, fn, false);
+      } else if (el && el.length) {
+        for (var i = 0; i < el.length; i++) {
+          addEvent(el[i], type, fn);
+        }
+      }
+    };
+  } else {
+    return function (el, type, fn) {
+      if (el && el.nodeName || el === window) {
+        el.attachEvent('on' + type, function () { return fn.call(el, window.event); });
+      } else if (el && el.length) {
+        for (var i = 0; i < el.length; i++) {
+          addEvent(el[i], type, fn);
+        }
+      }
+    };
+  }
+})();
+// 
+// 
+  var displaying = document.getElementById('displaying'),
+  	playing = document.getElementById('playing'),
+    log = document.getElementById('log'),
+    chat = document.getElementById('chat'),
+    form = chat.form,
+    conn = {},
+    highScores = document.getElementById('highScores'),
+    statusText = document.getElementById('status'),
+    statusRect = document.getElementById('statusColor');
+  
+  var spammer = false;
+  var timeDif = 0;
+  var spammerText = "Marked as spammer! Wait for ";
+  var spammerTimer = 0;
+  var spammerCounter = 0;
+  var spammerWait = 4999;
+  function log_(s , color , you){
+  	var td = new Date() - timeDif;
+	console_.log("timedif "  + td);
+	spammer = spammer || (td < 500);
+	timeDif = new Date();
+	
+	if(s == '') return false;
+	
+	if(spammer){
+		spammerTimer = spammerTimer || new Date();
+		console_.log(spammerTimer);
+		spammerCounter = new Date() - spammerTimer;
+		console_.log("eee " + spammerCounter);
+		if(spammerCounter > spammerWait){
+			spammer = false;
+			spammerCounter = 0;
+			spammerTimer = 0;
+		}
+	}else{
+		spammerCounter = 0;
+		spammerTimer = 0;
+	}
+	
+  	color = color || dtc;
+	var scroll_pane = $('#log').data('jsp');
+	var oContent = scroll_pane.getContentPane().html();
+	if(you){
+		s = s + (spammer ?   " -- " + spammerText + parseInt((spammerWait - spammerCounter)/1000 + 1) + " sec." : "");
+		scroll_pane.getContentPane().html('<p style="color:'+dtc+';">You: '+s+'</p>' + oContent);
+		return !spammer;
+	}else
+		scroll_pane.getContentPane().html('<p style="color:'+color+';">'+s+'</p>' + oContent);
+
+	// Reinitialise the #pane2 scrollpane
+	scroll_pane.reinitialise();
+	
+	return true;
+  }
+  
+  function connected_(s){
+  	displaying.innerHTML = s.table;
+  	playing.innerHTML = s.player;
+  	
+  }
+  
+  function canvas_(obj){
+  	if(!obj) return;
+  	canvas.width = obj.width * Renderer.boxW;
+  	canvas.height = obj.height * Renderer.boxH;
+  }
+  
+  function highScores_(arr){
+  	if(!arr) return;
+  	highScores.innerHTML = "";
+  	var len = arr.length
+  	while(--len >= 0) {
+		highScores.innerHTML = '<li style="border-left:4px solid '+arr[len].color+ '">'+ arr[len].name+'_'+ arr[len].score + '</li>' + highScores.innerHTML;
+  	};
+  }
+  
+  addEvent(form, 'submit', function (event) {
+    event.preventDefault();
+    // if we're connected
+    var s = chat.value.replace(/[<>&]/g, function (m) { return entities[m]; });
+    var ss = log_(s,dtc,true);
+    
+    if(ss) sendData(s); 
+    else console_.log("spammer");
+    chat.value = '';
+    
+  });
+  
+  var socket = io.connect(URL+'/draw');
+  
+  socket.on('connect',function(){
+  	console_.log("CONNECTED");
+  	isConnected(true);
+  });
+  socket.on('disconnect',function(){
+  	console_.log("DISCONNECTED");
+  	isConnected(false);
+  });
+  
+  socket.on('startDraw', function (data) {
+    console_.log(data);
+
+    socket.on('message', function (msg) {
+    	console_.log(msg.data + " -- " + msg.color);
+      	log_(msg.data,msg.color);
+    });
+    
+    socket.on('user disconnected', function (msg) {
+    	console_.log(msg);
+      	connected_(msg);
+    });
+        
+    socket.on('info', function (msg) {
+    	console_.log('info');
+    	console_.log(msg);
+      	connected_(msg);
+    	highScores_(msg.hs);
+    	canvas_(msg.dim);
+    });
+    
+    socket.on('refresh', function (data) {
+    	renderData(data.table);
+    	highScores_(data.hs);
+    	
+    });
+    
+  });
+  
+  function sendData(s){
+  	if(socket)
+    	socket.emit('message', { data : s});
+  }
+  
+  function isConnected(b){
+  	
+  	var c = b ? "#54db5f" : "#e32e66";
+  	var t = b ? "CONNECTED" : "DISCONNECTED";
+  	statusText.style.color = c;
+  	statusRect.style.backgroundColor = c;
+  	statusText.innerHTML = t;
+  }
+  
+  
+</script>
+
+
+</html>

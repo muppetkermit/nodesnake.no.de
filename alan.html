@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-9" />
+<title>NODE SNAKE</title>
+<link type="text/css" href="css/style.css" rel="stylesheet" media="all" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.mousewheel.js"></script>
+<script type="text/javascript" src="js/jquery.jscrollpane.min.js"></script>
+<script type="text/javascript" id="sourcecode">
+	$(function()
+	{
+		$('.scroll-pane').jScrollPane({showArrows: true});
+		$('.scroll-pane2').jScrollPane({showArrows: true});
+	});
+	
+	function inputtemizle(tval)
+	{
+		if(tval.value=="Type and press enter to chat")
+		{
+			document.getElementById(tval.name).value="";	
+		}
+	};
+	
+	function inputkontrol(tval)
+	{
+		if(tval.value==""){
+		document.getElementById("chatInput").value="Type and press enter to chat";
+	   }
+	};
+</script>
+</head>
+
+<body>
+<div class="header">
+	<div class="headerCenter">
+    	<div class="headerLeft">NODE SNAKE</div>
+        <div class="headerRight">is a tool for people who want to learn algorithm. Or me it is also a tool to explore JavaScript . When I finished the project, I found out that some of the tasks can be executed in a far better way. It works better in Chrome.</div>
+    </div><!-- center -->
+</div><!-- header -->
+<div class="clear"></div>
+<div class="content">
+	<div class="leftColumn">
+		<h1 class="left">TABLE 3 - ACTIVE PLAYER: 2</h1>
+    	<!--<div class="right rectangleDiv"><svg xmlns="http://www.w3.org/2000/svg" version="1.1"><rect width="20" height="20"  style="fill:#54db5f;float:right;"/></svg></div><h1 class="right">CONNECTED</h1> -->
+        <div class="right rectangleDiv"><svg xmlns="http://www.w3.org/2000/svg" version="1.1"><rect width="20" height="20"  style="fill:#e32e66;float:right;"/></svg></div><h2 class="right">DISCONNECTED</h2>
+        <div class="clear"></div>
+        <div class="gameBox">
+        </div><!-- gameBox -->
+    </div><!-- leftColumn -->
+    <div class="rightColumn">
+    	<div class="playerBox">
+        	<h1>Players</h1>
+            <ul class="scroll-pane">
+            	<li style="border-left:4px solid #70cdc3;">User01_99999999999</li>
+                <li style="border-left:4px solid #e58658;">User02_9999999999</li>
+                <li style="border-left:4px solid #c72dee;">User03_999999999</li>
+                <li style="border-left:4px solid #a5d048;">User04_99999999</li>
+                <li style="border-left:4px solid #8a42d3;">User05_9999999</li>
+                <li style="border-left:4px solid #e32e66;">User06_999999</li>
+                <li style="border-left:4px solid #f17e7e;">User07_99999</li>
+                <li style="border-left:4px solid #4652ef;">User08_9999</li>
+                <li style="border-left:4px solid #0ee3cc;">User09_999</li>
+                <li style="border-left:4px solid #fc049c;">User10_99</li>
+                <li style="border-left:4px solid #fc049c;">User10_99</li>
+                <li style="border-left:4px solid #fc049c;">User10_99</li>
+                <li style="border-left:4px solid #fc049c;">User10_99</li>
+                <li style="border-left:4px solid #fc049c;">User10_99</li>
+                <li style="border-left:4px solid #fc049c;">User10_99</li>
+                <li style="border-left:4px solid #fc049c;">User10_99</li>
+                <li style="border-left:4px solid #fc049c;">asdadasdasdasdasdasdadasdasdasdasdasdasdads</li>
+            	<!-- <li><span style="background-color:red;"><img src="gfx/spacer.gif" alt="" width="5px" height="1px" /></span>user1</li>-->
+            </ul>
+        </div><!-- playerBox -->
+        
+    </div><!-- rightColumn -->
+    <div class="clear"></div>
+    <div class="chatBox">
+        <form>
+            <input name="chatInput" type="text" id="chatInput" value="Type and press enter to chat" onclick="inputtemizle(this);" onblur="inputkontrol(this);" />
+            	<div  class="chatArea">
+                	<div class="scroll-pane2">
+                        <p style="color:#70cdc3;">jquery Scroll yap�lacak User01_Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <p style="color:#e58658;">User01_Phasellus felis massa, dictum sit amet consequat ut, tempus at nibh. </p>
+                        <p style="color:#a5d048;">User01_Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <p style="color:#e32e66;">User01_Phasellus felis massa, dictum sit amet consequat ut, tempus at nibh. </p>
+                        <p style="color:#70cdc3;">jquery Scroll yap�lacak User01_Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <p style="color:#e58658;">User01_Phasellus felis massa, dictum sit amet consequat ut, tempus at nibh. </p>
+                        <p style="color:#a5d048;">User01_Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <p style="color:#e32e66;">User01_Phasellus felis massa, dictum sit amet consequat ut, tempus at nibh. </p>
+                	</div>
+                </div>
+        </form>
+    </div>
+</div><!-- content -->
+</body>
+</html>

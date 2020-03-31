@@ -1,0 +1,181 @@
+@charset "iso-8859-9";
+/* CSS Document */
+
+body { background-color:#2a2a2a; padding:0px; margin:0px; font-family:"Courier New", Courier, monospace; font-size:14px;}
+h1	{font-size:16px; color:#54db5f; margin:0; padding:0;}
+h2	{font-size:16px; color:#e32e66; margin:0; padding:0;}
+.header	{background-color:#444343;}
+.headerCenter	{margin:0 auto; width:980px; height:110px;}
+.headerLeft		{font-size:56px; float:left; padding-top:20px;}
+.headerRight	{font-family:Arial, Helvetica, sans-serif; font-size:12px; padding-top:20px; float:left; margin-left:40px; width:440px; color:#141414;}
+.content	{margin:0 auto; width:980px; padding-top:30px;}
+.clear {clear:both;}
+.left	{ float:left;}
+.right	{ float:right;}
+.leftColumn	{width:780px; float:left;}
+.rightColumn	{width:200px; float:left; color:#c8c8c8;}
+.rectangleDiv	{background-color:#e32e66; width:20px; height:20px; margin:-2px 20px 0px 10px; }
+.gameBox	{width:749px; height:340px; border:10px solid #111; background:url(../gfx/gameBg.jpg) repeat; margin-top:12px;}
+.playerBox	{background-color:#171717; height:340px; margin-top:30px; padding:10px;}
+.playerBox ul {color:#c8c8c8;  margin:10px 0 0 5px; padding:0; height:310px; }
+.playerBox ul li	{list-style-type:none; padding-left:5px; line-height:15px; margin-bottom:17px; width:143px; overflow:hidden;}
+.chatBox	{margin-top:15px;}
+.chatBox input	{color:#54db5f; border:0; background:none; width:980px; margin-bottom:10px;}
+.chatArea	{color:#fff; padding:10px; height:65px; background-color:#202020;}
+.chatArea p	{margin:0; overflow:hidden;}
+.scroll-pane {height: 65px;overflow: auto;}
+.doubleLine	{border-top:1px solid #232323; border-bottom:1px solid #363636; line-height:2px; margin-top:20px;}
+
+a{ color:#70cdc3; text-decoration: none;}
+a:active{ text-decoration:none;}
+a:visited{ text-decoration:none;}
+a:hover{ text-decoration:underline;}
+
+input[type="text"], input[type="password"], textarea, select { 
+    outline: none;
+}
+
+input::-webkit-input-placeholder {
+    color:    #54db5f;
+}
+input:-moz-placeholder {
+    color:    #54db5f;
+}
+
+@font-face {
+font-family: 'helveticaNeue';
+src: url(http://ymutlu.com/experiment/robotworld/fonts/Helvetica_ExtraCompress_0.ttf) format("truetype");
+}
+
+.social a{
+	padding-top:20px; 
+	color:#444343;
+	background-color:#333333;
+	font-family:"helveticaNeue",Arial,serif;
+	text-decoration:none;
+	font-size:40px;
+	margin-left:20px;
+	margin-top:-5px;
+	
+	padding-right: 3px;
+	padding-left: 2px;
+	display: inline-block;
+	
+	height: 30px;
+}
+
+.social a:hover{
+	background-color:#FFFFFF;	
+}
+
+
+.clear{
+	clear: both;
+}
+
+
+/* scroll pane */
+.jspContainer
+{
+	overflow: hidden;
+	position: relative;
+}
+
+.jspPane
+{
+	position: absolute;
+}
+
+.jspVerticalBar{
+	position: absolute;	top: 0;	right: 0;	width: 12px;	height: 100%;
+}
+
+.jspHorizontalBar
+{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 16px;
+}
+
+.jspVerticalBar *,
+.jspHorizontalBar *
+{
+	margin: 0;
+	padding: 0;
+}
+
+.jspCap
+{
+	display: none;
+}
+
+.jspHorizontalBar .jspCap
+{
+	float: left;
+}
+
+.jspTrack
+{
+	position: relative;
+}
+
+.jspDrag{
+	background: #686868;	position: relative;	top: 0;	left: 0;	cursor: pointer;
+}
+
+.jspHorizontalBar .jspTrack, .jspHorizontalBar .jspDrag{
+	float: left;	height: 100%;
+}
+
+.jspArrow{
+	background:url(../gfx/scroll_up_down.png) 0 0 no-repeat;	
+	text-indent: -20000px;	
+	display: block;	
+	cursor: pointer;
+}
+
+.jspArrow.jspDisabled{
+	cursor: default;	
+   width: 100%;
+   -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+   filter: alpha(opacity=50);
+   -moz-opacity:0.5;
+   -khtml-opacity: 0.5;
+   opacity: 0.5;
+}
+
+.jspVerticalBar .jspArrow
+{
+	height: 16px;
+}
+.jspVerticalBar .jspArrow.jspArrowDown{
+	background-position:0 -24px;
+	}
+
+.jspHorizontalBar .jspArrow
+{
+	width: 16px;
+	float: left;
+	height: 100%;
+}
+
+.jspVerticalBar .jspArrow:focus
+{
+	outline: none;
+}
+
+.jspCorner
+{
+	background: #eeeef4;
+	float: left;
+	height: 100%;
+}
+
+/* Yuk! CSS Hack for IE6 3 pixel bug :( */
+* html .jspCorner
+{
+	margin: 0 -3px 0 0;
+}
+/* scroll pane*/

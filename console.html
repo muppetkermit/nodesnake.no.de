@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset=utf-8>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<script src="js/Render.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<title>Node-Snake Console v.1</title>
+
+<script>
+var addEvent = (function () {
+  if (document.addEventListener) {
+    return function (el, type, fn) {
+      if (el && el.nodeName || el === window) {
+        el.addEventListener(type, fn, false);
+      } else if (el && el.length) {
+        for (var i = 0; i < el.length; i++) {
+          addEvent(el[i], type, fn);
+        }
+      }
+    };
+  } else {
+    return function (el, type, fn) {
+      if (el && el.nodeName || el === window) {
+        el.attachEvent('on' + type, function () { return fn.call(el, window.event); });
+      } else if (el && el.length) {
+        for (var i = 0; i < el.length; i++) {
+          addEvent(el[i], type, fn);
+        }
+      }
+    };
+  }
+})();
+
+</script>
+<style type="text/css">
+    html, body, body div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, figure, footer, header, hgroup, menu, nav, section, time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+    background-color:transparent;
+}
+
+</style>
+</head>
+
+<body>
+	<img src="img/console_.png" width="480" height="320" border="0" usemap="#0.1_Map"/>
+    <map name="0.1_Map">
+      <area shape="rect" coords="45,152,98,200" href="javascript:;" alt="sol" id="btn_0">
+      <area shape="rect" coords="95,105,145,153" href="javascript:;" alt="yukarı" id="btn_1">
+      <area shape="rect" coords="138,151,195,199" href="javascript:;" alt="sağ" id="btn_2">
+      <area shape="rect" coords="95,197,145,250" href="javascript:;" alt="aşağı" id="btn_3">
+      <area shape="rect" coords="97,152,138,198" href="javascript:;" alt="orta" id="btn_4">
+    </map>
+    
+<script>
+
+
+  var socket = io.connect('http://192.168.1.124:8000');
+  socket.on('startIT', function (data) {
+    console.log(data);
+    
+    socket.emit('newUser', "");
+    
+	
+    socket.on('message', function (msg) {
+    	console.log(msg);
+    });
+    
+    socket.on('user disconnected', function (msg) {
+    	console.log(msg);
+    });
+        
+    socket.on('info', function (msg) {
+    	console.log(msg);
+    });
+    
+  });
+  
+  function sendData(s){
+    socket.emit('command', { data : s});
+  }
+  
+addEvent(document.getElementById("btn_0"),"mousedown",mouseHandler);
+addEvent(document.getElementById("btn_1"),"mousedown",mouseHandler);
+addEvent(document.getElementById("btn_2"),"mousedown",mouseHandler);
+addEvent(document.getElementById("btn_3"),"mousedown",mouseHandler);
+addEvent(document.getElementById("btn_4"),"mousedown",mouseHandler);
+
+
+function mouseHandler(e){
+	var s = e.target.id.substr(4,1);
+	console.log(e.target.id.substr(4,1));
+	sendData(parseInt(s));
+}
+
+window.addEventListener('load', function(e) {
+    setTimeout(function() { window.scrollTo(0, 1); }, 5);
+  }, false);
+</script>
+    
+    
+</body>
+</html>

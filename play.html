@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset=utf-8>
+<meta name="viewport" content="width=620">
+<title>Node - Snake World</title>
+<link rel="stylesheet" href="css/html5demos.css">
+<body>
+<script>
+  
+  
+</script>
+
+
+<section id="wrapper">
+    <header>
+      <h1>Web Socket</h1>
+    </header>
+
+<style>
+#chat { width: 97%; }
+.them { font-weight: bold; }
+.them:before { content: 'them '; color: #bbb; font-size: 14px; }
+.you { font-style: italic; }
+.you:before { content: 'you '; color: #bbb; font-size: 14px; font-weight: bold; }
+#log {
+  overflow: auto;
+  max-height: 300px;
+  list-style: none;
+  padding: 0;
+/*  margin: 0;*/
+}
+#log li {
+  border-top: 1px solid #ccc;
+  margin: 0;
+  padding: 10px 0;
+}
+</style>
+<article>
+  <form>
+    <input type="text" id="chat" placeholder="type and press enter to chat" />
+    
+  </form>
+  <p id="status">Not connected</p>
+  <p>Users connected: <span id="connected">0</span></p>
+  <ul id="log"></ul>
+</article>
+<script>
+  
+var addEvent = (function () {
+  if (document.addEventListener) {
+    return function (el, type, fn) {
+      if (el && el.nodeName || el === window) {
+        el.addEventListener(type, fn, false);
+      } else if (el && el.length) {
+        for (var i = 0; i < el.length; i++) {
+          addEvent(el[i], type, fn);
+        }
+      }
+    };
+  } else {
+    return function (el, type, fn) {
+      if (el && el.nodeName || el === window) {
+        el.attachEvent('on' + type, function () { return fn.call(el, window.event); });
+      } else if (el && el.length) {
+        for (var i = 0; i < el.length; i++) {
+          addEvent(el[i], type, fn);
+        }
+      }
+    };
+  }
+})();
+// 
+// 
+  // var connected = document.getElementById('connected'),
+    // log = document.getElementById('log'),
+    // chat = document.getElementById('chat'),
+    // form = chat.form,
+    // conn = {},
+    // state = document.getElementById('status');
+//     
+  // function log_(s){
+  	// log.innerHTML = '<li class="them">' + s.replace(/[<>&]/g, function (m) { return entities[m]; }) + '</li>' + log.innerHTML;
+  // }
+//   
+  // function connected_(s){
+  	// connected.innerHTML = s;
+  // }
+//   
+//   
+  // addEvent(form, 'submit', function (event) {
+    // event.preventDefault();
+    // // if we're connected
+    // var s = chat.value.replace(/[<>&]/g, function (m) { return entities[m]; });
+    // console.log(s);
+    // sendData(s);
+    // log.innerHTML = '<li class="you">' + s + '</li>' + log.innerHTML;
+    // chat.value = '';
+//     
+  // });
+  
+</script>
+
+<canvas id="canvas"></canvas>
+
+
+<script src="Render.js"></script>
+<script src="Snake.js"></script>
+<script src="User.js"></script>
+<script src="World.js"></script>
+
+<script>
+	
+    var d = window.document,
+    w = d.width,
+    h = d.height;
+    
+    var canvas = d.getElementById("canvas");
+    
+    canvas.width = 625;
+    canvas.height = 625;
+    
+    if(!canvas)
+    	canvas = d.body.appendChild(d.createElement('canvas'));
+    context = canvas.getContext( '2d' );
+    
+	var world = new World(context);
+	console.log('------');
+	world.doStep(0);
+	//world.toTable();
+	
+	
+	addEvent(document, "keydown" , function(e){
+		//console.log('event ' + e.keyCode);
+		world.doStep(e.keyCode-37);
+	});
+	
+	
+</script>
+
+
+</body>
+</html>

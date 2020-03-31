@@ -1,0 +1,314 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Node-Snake Joystick v.1</title>  
+<script>
+
+var console_ = { 	log:function(s){
+						console.log("LOGGER:" + s);
+					},
+					dir:function(s){
+						console.dir(s)
+					}
+				}
+				
+var addEvent = (function () {
+  if (document.addEventListener) {
+    return function (el, type, fn) {
+      if (el && el.nodeName || el === window) {
+        el.addEventListener(type, fn, false);
+      } else if (el && el.length) {
+        for (var i = 0; i < el.length; i++) {
+          addEvent(el[i], type, fn);
+        }
+      }
+    };
+  } else {
+    return function (el, type, fn) {
+      if (el && el.nodeName || el === window) {
+        el.attachEvent('on' + type, function () { return fn.call(el, window.event); });
+      } else if (el && el.length) {
+        for (var i = 0; i < el.length; i++) {
+          addEvent(el[i], type, fn);
+        }
+      }
+    };
+  }
+})();
+
+function removeEvent (el,type,fn) {
+    if (el.removeEventListener) {    // all browsers except IE before version 9
+        el.removeEventListener (type, fn, false);
+    }else {
+        if (el.detachEvent) {        // IE before version 9
+            el.detachEvent ('on'+type, fn);
+        }
+    }
+}
+
+</script>
+
+<style>
+html, body, body div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, figure, footer, header, hgroup, menu, nav, section, time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+    background-color:transparent;
+}
+
+body{background-color: black;}
+.wrapper {width:320px; height: 320px; position: relative; margin: auto;}
+.wrapper .handle {width: 70px; height: 70px; -moz-border-radius: 35px; -webkit-border-radius: 35px; background: black; z-index: 2; position: absolute; top: 50%; left: 50%; margin: -35px; 0 0 -35px; opacity: 0.3}
+.wrapper .buttonArea {width: 120px; height: 120px; z-index: 9; position: absolute; top: 50%; left: 50%; margin: -60px 0 0 -60px;}
+.wrapper .button {width: 120px; height: 120px; -moz-border-radius: 60px; -webkit-border-radius: 60px; background: red ; z-index: 9; position: absolute; top: 0px; left: 0px; opacity: 0.3;}
+</style>
+
+</head>
+<body>
+	<div id="login" style=" text-align:center; z-index:999;  position: absolute; top: 0px; left: 0px; width:100%; height: 320px;  background-color:#333; opacity:0.8;">
+		  <form style="margin-top:60px;">
+			<input type="text" id="nick" placeholder="get a life noob!" />
+			<br/>
+			<input type="submit" id="btn" value="Please Wait!"/>
+		</form>
+	</div>
+	<div class="wrapper" id="wrapper">
+        <div class="buttonArea" id="area">
+        		<div class="button" id="joystick"></div>
+        	</div>
+        </div>
+    </div>
+    <div id="log">test</div>
+</body>
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+
+
+	var loginOnScreen = true;
+	var joystick = document.getElementById("joystick"),
+		area = document.getElementById("area"),
+		logg = document.getElementById("log"),
+		nick = document.getElementById("nick"),
+		btn = document.getElementById("btn"),
+		login = document.getElementById("login"),
+		form = nick.form,
+		wrapper = document.getElementById("wrapper");
+	
+	var centerX = 	wrapper.offsetLeft + area.offsetLeft + joystick.clientWidth/2,
+		centerY =	wrapper.offsetTop + area.offsetTop + joystick.clientHeight/2;	
+		
+
+	addEvent(form, 'submit', function (event) {
+	    event.preventDefault();
+	});
+	
+  
+  var url = document.URL;
+  var urlArr = url.split("/");
+  url = urlArr[0]+"//"+ urlArr[2];
+  var socket = io.connect(url+'/play');
+
+  socket.on('connect',function(){
+  	console_.log("CONNECTED");
+  	btn.value = "Play!";
+  });
+  
+  socket.on('startIT', function (data) {
+    console_.log(data);
+    
+    //socket.emit('newUser', "");
+    
+	  addEvent(form, 'submit', function (event) {
+	    event.preventDefault();
+	    var s = nick.value.replace(/[<>&]/g, function (m) { return entities[m]; });
+	    console_.log(s);
+	    newUser(s);
+	    addEvents();
+	  });
+	
+	
+    socket.on('message', function (msg) {
+    	console_.log("message " +msg);
+    });
+    
+    //socket.emit('userdata',{self:{color:s.color,scores:highScores}});
+    socket.on('userdata', function (data) {
+    	console_.log("userdata " +data.self.color);
+    	wrapper.style.backgroundColor = data.self.color;
+    });
+    
+    socket.on('disconnected', function (msg) {
+    	console_.log("disconnected" + msg);
+    });
+        
+    socket.on('info', function (msg) {
+    	console_.log("info " + msg);
+    });
+    
+  });
+  
+  function sendData(s){
+    socket.emit('command', { data : s});
+  }
+
+  function newUser(s){
+  	socket.emit('newUser', s);
+  }
+</script>
+<script>
+
+	addEvent(window,'resize', onResize);
+	function onResize(e){
+		centerX = 	wrapper.offsetLeft + area.offsetLeft + joystick.clientWidth/2,
+		centerY =	wrapper.offsetTop + area.offsetTop + joystick.clientHeight/2;
+		
+		login.style.height = window.innerHeight+"px";
+	}
+	onResize();
+	
+	var  _lastSentData;
+	function emmitData(){
+		if(_lastSentData != _currDir){
+			sendData(_currDir);
+			_lastSentData = _currDir;
+		}
+	}
+	
+	var interval__ = -1;
+	
+	function addEvents(){
+		
+		login.style.visibility = "hidden";
+		
+		addEvent(document,'mousedown', onMouseEvent);
+		addEvent(document,'click', function(){void(0);}) ;
+		addEvent(document,'mouseup', onMouseEvent);
+		
+		addEvent(document,"touchstart", onTouch, false);
+		addEvent(document,"touchmove", onTouch, false);
+		addEvent(document,"touchend", onTouch, false);
+		addEvent(document,"touchcancel", onTouch, false);
+	}
+	
+	function onTouch(e){
+		logg.innerHTML = e.type;
+		switch(e.type){
+			case "touchstart":
+				addEvent(document,'touchmove', onTouch);
+				interval__ = setInterval(emmitData,1);
+			break;
+			case "touchend":
+				removeEvent(document,'touchmove', onTouch);
+				moveJoystick(centerX,centerY);
+			if(interval__ > 0)
+				clearInterval(interval__);
+			interval__ = -1;
+			break;
+			case "touchmove":
+				event.preventDefault();
+				moveJoystick(e.targetTouches[0].pageX,e.targetTouches[0].pageY);
+			break;
+		}
+	}
+	
+	function onMouseEvent(e){
+		switch(e.type){
+			case "mousedown":
+				addEvent(document,'mousemove', onMouseEvent);
+				interval__ = setInterval(emmitData,10);
+			break;
+			case "mouseup":
+				removeEvent(document,'mousemove', onMouseEvent);
+				moveJoystick(centerX,centerY);
+			if(interval__ > 0)
+				clearInterval(interval__);
+			interval__ = -1;
+			break;
+			case "mousemove":
+				moveJoystick(e.clientX,e.clientY);
+			break;
+		}
+	}
+	
+	function onClick(){
+		void(0);
+	}
+	
+	function moveJoystick($x,$y){
+		//.style.visibility = "hidden";
+		
+		var d = 60;
+		var dd = 3600;
+		
+		var x = $x - centerX,
+			y = $y - centerY;
+		
+		var dist = sq(x) + sq(y);
+		var ang;
+		
+		if(dist > dd){
+			ang = Math.atan(y/x);
+			var m = x>=0?1:-1;
+			x = Math.cos(ang)*d*m;
+			y = Math.sin(ang)*d*m;
+		}
+		
+		joystick.style.left = x+"px";
+		joystick.style.top = y+"px";
+		
+		if(dist > 1000)
+			_currDir = findVal(x,y);
+		
+	}
+	
+	function sq(a){
+		return a * a;
+	}
+	
+	var prevX = 0, prevY = 0;
+	var _left = 0, _up = 1, _right = 2, _down = 3;
+	var _currDir = 0;
+	function findVal(x,y){
+		if(x<0 && y<=0){
+			if(y>x)
+				return _left;
+			else
+				return _up;
+		}
+		if(y<0 & x>=0){
+			if(x<-1*y)
+				return _up;
+			else
+				return _right;
+		}
+		if(x>0 && y>=0){
+			if(x>y)
+				return _right;
+			else
+				return _down;
+		}
+		if(x<=0 && y>0){
+			if(y>-1*x)
+				return _down;
+			else
+				return _left;
+		}
+		return _currDir;
+	}
+		
+window.addEventListener('load', function(e) {
+	setTimeout(function() { window.scrollTo(0, 1); }, 5);
+}, false);
+
+</script>
+
+</html>
